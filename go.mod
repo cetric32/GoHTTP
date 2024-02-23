@@ -1,3 +1,3 @@
-module github.com/cetric32/Go-HTTP
+module github.com/cetric32/GoHTTP
 
 go 1.21.6
