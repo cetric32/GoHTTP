@@ -35,124 +35,140 @@ func (g *GoHTTP) setNewRequest(method string, url string, body io.Reader) error 
 }
 
 // Get makes a GET request
-func (g *GoHTTP) Get(url string) ([]byte, int, error) {
-	err := g.setNewRequest("GET", url, nil)
-	if err != nil {
-		return []byte(""), 0, err
-	}
+func (g *GoHTTP) Get(url string) (responseData []byte, statusCode int, err error) {
+	responseData = []byte("")
 
-	respBody, statusCode, err := g.Do(g.request)
+	err = g.setNewRequest("GET", url, nil)
 
 	if err != nil {
-		return []byte(""), 0, err
+		return
 	}
-	return (respBody), statusCode, nil
+
+	responseData, statusCode, err = g.Do(g.request)
+
+	if err != nil {
+		return
+	}
+
+	return
 }
 
 // Post makes a POST request
-func (g *GoHTTP) Post(url string, body io.Reader) ([]byte, int, error) {
+func (g *GoHTTP) Post(url string, body io.Reader) (responseData []byte, statusCode int, err error) {
+	responseData = []byte("")
 
-	err := g.setNewRequest("POST", url, body)
-
-	if err != nil {
-		return []byte(""), 0, err
-	}
-
-	respBody, statusCode, err := g.Do(g.request)
+	err = g.setNewRequest("POST", url, body)
 
 	if err != nil {
-		return []byte(""), statusCode, err
+		return
 	}
-	return (respBody), statusCode, nil
+
+	responseData, statusCode, err = g.Do(g.request)
+
+	if err != nil {
+		return
+	}
+
+	return
 }
 
 // PostForm makes a POST request with form data
-func (g *GoHTTP) PostForm(url string, data map[string][]string) ([]byte, int, error) {
-	err := g.setNewRequest("POST", url, nil)
+func (g *GoHTTP) PostForm(url string, data map[string][]string) (responseData []byte, statusCode int, err error) {
+	responseData = []byte("")
+
+	err = g.setNewRequest("POST", url, nil)
 
 	if err != nil {
-		return []byte(""), 0, err
+		return
 	}
 
 	g.request.PostForm = data
 
-	respBody, statusCode, err := g.Do(g.request)
+	responseData, statusCode, err = g.Do(g.request)
 
 	if err != nil {
-		return []byte(""), statusCode, err
+		return
 	}
 
-	return (respBody), statusCode, nil
+	return
 }
 
 // Put makes a PUT request
-func (g *GoHTTP) Put(url string, body io.Reader) ([]byte, int, error) {
-	err := g.setNewRequest("PUT", url, body)
+func (g *GoHTTP) Put(url string, body io.Reader) (responseData []byte, statusCode int, err error) {
+	responseData = []byte("")
+
+	err = g.setNewRequest("PUT", url, body)
 
 	if err != nil {
-		return []byte(""), 0, err
+		return
 	}
 
-	respBody, statusCode, err := g.Do(g.request)
+	responseData, statusCode, err = g.Do(g.request)
 
 	if err != nil {
-		return []byte(""), statusCode, err
+		return
 	}
 
-	return (respBody), statusCode, nil
+	return
 }
 
 // Patch makes a PATCH request
-func (g *GoHTTP) Patch(url string, body io.Reader) ([]byte, int, error) {
-	err := g.setNewRequest("PATCH", url, body)
+func (g *GoHTTP) Patch(url string, body io.Reader) (responseData []byte, statusCode int, err error) {
+	responseData = []byte("")
+
+	err = g.setNewRequest("PATCH", url, body)
 
 	if err != nil {
-		return []byte(""), 0, err
+		return
 	}
 
-	respBody, statusCode, err := g.Do(g.request)
+	responseData, statusCode, err = g.Do(g.request)
 
 	if err != nil {
-		return []byte(""), statusCode, err
+		return
 	}
 
-	return (respBody), statusCode, nil
+	return
 }
 
 // Delete makes a DELETE request
-func (g *GoHTTP) Delete(url string) ([]byte, int, error) {
-	err := g.setNewRequest("DELETE", url, nil)
+func (g *GoHTTP) Delete(url string) (responseData []byte, statusCode int, err error) {
+	responseData = []byte("")
+
+	err = g.setNewRequest("DELETE", url, nil)
 
 	if err != nil {
-		return []byte(""), 0, err
+		return
 	}
 
-	respBody, statusCode, err := g.Do(g.request)
+	responseData, statusCode, err = g.Do(g.request)
 
 	if err != nil {
-		return []byte(""), statusCode, err
+		return
 	}
 
-	return (respBody), statusCode, nil
+	return
 }
 
 // Do makes a request
-func (g *GoHTTP) Do(req *http.Request) ([]byte, int, error) {
+func (g *GoHTTP) Do(req *http.Request) (responseData []byte, statusCode int, err error) {
+	responseData = []byte("")
+
 	resp, err := g.client.Do(req)
 	if err != nil {
-		return []byte(""), 0, err
+		return
 	}
 
 	defer resp.Body.Close()
 
-	statusCode := resp.StatusCode
-	respBody, err := io.ReadAll(resp.Body)
+	statusCode = resp.StatusCode
+	responseData, err = io.ReadAll(resp.Body)
 
 	if err != nil {
-		return []byte(""), 0, err
+		return
 	}
 
-	return (respBody), statusCode, nil
+	return
 }
 
 // SetTimeout sets the timeout for the request
