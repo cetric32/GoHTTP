@@ -6,14 +6,16 @@ import (
 	"time"
 )
 
-// GoHTTP struct to hold the http client and request
+// GoHTTP struct to hold the http client and request.
 type GoHTTP struct {
 	client  *http.Client
 	request *http.Request
 	headers map[string]string
 }
 
-// NewGoHTTP creates a new GoHTTP instance
+// NewGoHTTP creates a new GoHTTP instance.
+// Example:
+// goHttp := GoHTTP.NewGoHTTP()
 func NewGoHTTP() *GoHTTP {
 	return &GoHTTP{
 		client:  &http.Client{},
@@ -34,7 +36,9 @@ func (g *GoHTTP) setNewRequest(method string, url string, body io.Reader) error 
 	return nil
 }
 
-// Get makes a GET request
+// Get makes a GET request.
+// Example:
+// result, statusCode, err := goHttp.Get("https://jsonplaceholder.typicode.com/posts/1")
 func (g *GoHTTP) Get(url string) (responseData []byte, statusCode int, err error) {
 	responseData = []byte("")
 
@@ -53,7 +57,9 @@ func (g *GoHTTP) Get(url string) (responseData []byte, statusCode int, err error
 	return
 }
 
-// Post makes a POST request
+// Post makes a POST request.
+// Example:
+// result, statusCode, err := goHttp.Post("https://jsonplaceholder.typicode.com/posts", nil)
 func (g *GoHTTP) Post(url string, body io.Reader) (responseData []byte, statusCode int, err error) {
 	responseData = []byte("")
 
@@ -72,7 +78,9 @@ func (g *GoHTTP) Post(url string, body io.Reader) (responseData []byte, statusCo
 	return
 }
 
-// PostForm makes a POST request with form data
+// PostForm makes a POST request with form data.
+// Example:
+// result, statusCode, err := goHttp.PostForm("https://jsonplaceholder.typicode.com/posts", map[string][]string{"title": {"foo"}, "body": {"bar"}, "userId": {"1"}})
 func (g *GoHTTP) PostForm(url string, data map[string][]string) (responseData []byte, statusCode int, err error) {
 	responseData = []byte("")
 
@@ -93,7 +101,9 @@ func (g *GoHTTP) PostForm(url string, data map[string][]string) (responseData []
 	return
 }
 
-// Put makes a PUT request
+// Put makes a PUT request.
+// Example:
+// result, statusCode, err := goHttp.Put("https://jsonplaceholder.typicode.com/posts/1", nil)
 func (g *GoHTTP) Put(url string, body io.Reader) (responseData []byte, statusCode int, err error) {
 	responseData = []byte("")
 
@@ -112,7 +122,9 @@ func (g *GoHTTP) Put(url string, body io.Reader) (responseData []byte, statusCod
 	return
 }
 
-// Patch makes a PATCH request
+// Patch makes a PATCH request.
+// Example:
+// result, statusCode, err := goHttp.Patch("https://jsonplaceholder.typicode.com/posts/1", nil)
 func (g *GoHTTP) Patch(url string, body io.Reader) (responseData []byte, statusCode int, err error) {
 	responseData = []byte("")
 
@@ -131,7 +143,9 @@ func (g *GoHTTP) Patch(url string, body io.Reader) (responseData []byte, statusC
 	return
 }
 
-// Delete makes a DELETE request
+// Delete makes a DELETE request.
+// Example:
+// result, statusCode, err := goHttp.Delete("https://jsonplaceholder.typicode.com/posts/1")
 func (g *GoHTTP) Delete(url string) (responseData []byte, statusCode int, err error) {
 	responseData = []byte("")
 
@@ -150,7 +164,11 @@ func (g *GoHTTP) Delete(url string) (responseData []byte, statusCode int, err er
 	return
 }
 
-// Do makes a request
+// Do makes a request.
+// Example:
+// import "net/http".
+// req, err := http.NewRequest("GET", "https://jsonplaceholder.typicode.com/posts/1", nil).
+// result, statusCode, err := goHttp.Do(req)
 func (g *GoHTTP) Do(req *http.Request) (responseData []byte, statusCode int, err error) {
 	responseData = []byte("")
 
@@ -171,7 +189,9 @@ func (g *GoHTTP) Do(req *http.Request) (responseData []byte, statusCode int, err
 	return
 }
 
-// SetTimeout sets the timeout for the request
+// SetTimeout sets the timeout for the request.
+// Example:
+// goHttp.SetTimeout(10)
 func (g *GoHTTP) SetTimeout(timeout int) {
 	g.client.Timeout = time.Duration(timeout) * time.Second
 }
@@ -190,7 +210,9 @@ func (g *GoHTTP) addHeaders() {
 	}
 }
 
-// AddHeaders adds headers to the request
+// AddHeaders adds headers to the request.
+// Example:
+// goHttp.AddHeaders(map[string]string{"Content-Type": "application/json", "Authorization": "Bearer <token>"})
 func (g *GoHTTP) AddHeaders(headers map[string]string) {
 	g.headers = headers
 }
