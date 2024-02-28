@@ -3,6 +3,7 @@ package GoHTTP
 import (
 	"io"
 	"net/http"
+	"net/url"
 	"time"
 )
 
@@ -215,4 +216,67 @@ func (g *GoHTTP) addHeaders() {
 // goHttp.AddHeaders(map[string]string{"Content-Type": "application/json", "Authorization": "Bearer <token>"})
 func (g *GoHTTP) AddHeaders(headers map[string]string) {
 	g.headers = headers
+}
+
+// AddCookies adds cookies to the request.
+// Example:
+// goHttp.AddCookies([]*http.Cookie{&http.Cookie{Name: "name", Value: "value"}})
+func (g *GoHTTP) AddCookies(cookies []*http.Cookie) {
+	if g.request == nil {
+		return
+	}
+
+	for _, cookie := range cookies {
+		g.request.AddCookie(cookie)
+	}
+}
+
+// SetCookie sets a cookie to the request.
+// Example:
+// goHttp.SetCookie(&http.Cookie{Name: "name", Value: "value"})
+func (g *GoHTTP) SetCookie(cookie *http.Cookie) {
+	if g.request == nil {
+		return
+	}
+
+	g.request.AddCookie(cookie)
+}
+
+// SetBasicAuth sets the basic auth for the request.
+func (g *GoHTTP) SetBasicAuth(username, password string) {
+	if g.request == nil {
+		return
+	}
+
+	g.request.SetBasicAuth(username, password)
+}
+
+// SetBearerToken sets the bearer token for the request.
+func (g *GoHTTP) SetBearerToken(token string) {
+	if g.request == nil {
+		return
+	}
+
+	g.request.Header.Set("Authorization", "Bearer "+token)
+}
+
+// SetProxy sets the proxy for the request.
+// Example:
+// goHttp.SetProxy("http://proxy.example.com:8080")
+func (g *GoHTTP) SetProxy(proxyURL string) error {
+	if g.client == nil {
+		return nil
+	}
+
+	newProxyURL, err := url.Parse(proxyURL)
+
+	if err != nil {
+		return err
+	}
+
+	g.client.Transport = &http.Transport{
+		Proxy: http.ProxyURL(newProxyURL),
+	}
+
+	return nil
 }
