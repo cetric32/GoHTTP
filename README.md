@@ -61,3 +61,9 @@ result, statusCode, err := goHttp.Delete("https://jsonplaceholder.typicode.com/p
 ```
 goHttp.AddHeaders(map[string]string{"Content-Type": "application/json", "Authorization": "Bearer <token>"})
 ```
+
+## Use a proxy server
+
+```
+ goHttp.SetProxy("http://proxy.example.com:8080")
+```
